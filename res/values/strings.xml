@@ -742,10 +742,21 @@
     <string name="perm_enable_warning_title">Are you sure?</string>
 
     <!-- WM8994 Control Settings -->
+    <!--  Categories -->
+    <string name="category_wm8994_internal_speaker">Internal Speaker Configuration</string>
+    <string name="category_wm8994_signal_processing">Signal Processing</string>
+    <string name="category_wm8994_headphone_amp">Headphone Amplifier</string>
+    <string name="category_wm8994_codec_optimization">Codec Optimization</string>
+    <string name="category_wm8994_dac_config">Digital/Analog Converter Settings</string>
+    <string name="category_wm8994_analog_path">Analog Path Configuration</string>
+    <string name="category_wm8994_mic_settings">Microphone Settings</string>
+    <!--  Titles/Summaries -->
     <string name="wm8994_settings_title_head">WM8994 Settings</string>
     <string name="wm8994_settings_title_subhead">WM8994 Settings</string>
-    <string name="wm8994_settings_title_summary">Advanced control of the WM8994 sound processor hardware</string>
+    <string name="wm8994_settings_summary_head">Advanced control of the WM8994 sound processor hardware</string>
     <string name="pref_wm8994_control_enable_title">Enable WM8994 Control</string>
     <string name="pref_wm8994_control_enable_summary">Enable advanced controls for the WM8994 sound processor hardware</string>
+    <string name="pref_wm8994_speaker_tuning_title">Tune speaker for music</string>
+    <string name="pref_wm8994_speaker_tuning_summary">Reconfigures the hardware EQ to get more bass and balanced sound</string>
 
 </resources>

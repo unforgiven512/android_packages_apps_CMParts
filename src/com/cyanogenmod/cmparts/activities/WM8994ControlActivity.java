@@ -34,21 +34,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 // WM8994 control stuff
-public class WM8994ControlActivity extends PreferenceActivity implements
-        Preference.OnPreferenceChangeListener {
+public class WM8994ControlActivity extends PreferenceActivity /*implements
+        Preference.OnPreferenceChangeListener */{
 
     // XXX: The sysfs interface may be re-written to remove reference to the "voodoo" name
+	// SYSFS paths
     public static final String WM8994_ENABLE = "/sys/devices/virtual/misc/voodoo_sound_control/enable";
+    public static final String WM8994_SPEAKER_TUNING = "/sys/devices/virtual/misc/voodoo_sound/speaker_tuning";
     
-    private static final String GENERAL_CATEGORY = "general_category";
-    
-    private static final String WM8994_ENABLE_PREF = "pref_wm8994_control_enable";
-    private static final String WM8994_CONTROL_ENABLED = "1";
-    
-    private static final String TAG = "WM8994Control";
-    
+    // Preference Objects
     private CheckBoxPreference mWm8994EnablePref;
-
+    private CheckBoxPreference mSpeakerTuning;
+    
+    // XML item names
+    private static final String WM8994_ENABLE_PREF = "pref_wm8994_control_enable";
+    private static final String SPEAKER_TUNING_PREF = "pref_wm8994_speaker_tuning";
+    
+    // Misc
+    private static final String GENERAL_CATEGORY = "general_category";
+    private static final String PREF_ENABLED = "1";
+    private static final String TAG = "WM8994Control";
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +68,15 @@ public class WM8994ControlActivity extends PreferenceActivity implements
 
         PreferenceCategory generalCategory = (PreferenceCategory)prefSet.findPreference (GENERAL_CATEGORY);
 
-        // read value from sysfs interface
+        // WM8994 enabled
         temp = readOneLine(WM8994_ENABLE);
-        
-
-        // Enable wm8994 control settings preference
         mWm8994EnablePref = (CheckBoxPreference) prefSet.findPreference(WM8994_ENABLE_PREF);
-        mWm8994EnablePref.setChecked(WM8994_CONTROL_ENABLED.equals(temp));
+        mWm8994EnablePref.setChecked(PREF_ENABLED.equals(temp));
+        
+        // speaker tuning
+        temp = readOneLine(WM8994_SPEAKER_TUNING);
+        mSpeakerTuning = (CheckBoxPreference) prefSet.findPreference(SPEAKER_TUNING_PREF);
+        mSpeakerTuning.setChecked(PREF_ENABLED.equals(temp));
         
     }
     
@@ -76,24 +84,21 @@ public class WM8994ControlActivity extends PreferenceActivity implements
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
     	
-    	// "Enable" box value
+    	// WM8994 enable/disable box
     	if (preference == mWm8994EnablePref) {
     		// Store box value as a string in "boxValue"
     		String boxValue = mWm8994EnablePref.isChecked() ? "1" : "0";
-    		// Make sure boxValue is not null
-    		if (boxValue != null) {
-    			// check to make sure boxValue was written to file
-    			if (writeOneLine(WM8994_ENABLE, (String) boxValue)) {
-    				String debug ="DEBUG: Wrote value " + boxValue + " to " + WM8994_ENABLE;
-    				Log.d(TAG, debug);
-    				return true;
-    			} else {
-    				String error = "Writing to " + WM8994_ENABLE + " failed! Value: " + boxValue;
-    				Log.e(TAG, error);
-    				return false;
-				}
-    		}
+    		commitSysfsPreference(WM8994_ENABLE, boxValue);
     	}
+    	
+    	// Speaker tuning enable/disable box
+    	if (preference == mSpeakerTuning) {
+    		// Store box value as a string in "boxValue"
+    		String boxValue = mSpeakerTuning.isChecked() ? "1" : "0";
+    		commitSysfsPreference(WM8994_SPEAKER_TUNING, boxValue);
+    	}
+    	
+    	// otherwise quit, and return false (if preference name doesn't match a condition)
         return false;
     }
 
@@ -155,5 +160,20 @@ public class WM8994ControlActivity extends PreferenceActivity implements
             return false;
         }
         return true;
+    }
+    
+    public static boolean commitSysfsPreference(String prefFile, String prefValue) {
+    	if (prefValue != null) {
+			if (writeOneLine(prefFile, prefValue)) {
+				String debug ="DEBUG: Wrote value " + prefValue + " to " + prefFile;
+				Log.d(TAG, debug);
+				return true;
+			} else {
+				String error = "Writing to " + prefFile + " failed! Value: " + prefValue;
+				Log.e(TAG, error);
+				return false;
+			}
+		}
+    	return false;
     }
 }
