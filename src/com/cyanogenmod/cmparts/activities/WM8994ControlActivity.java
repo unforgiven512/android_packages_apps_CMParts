@@ -25,6 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -70,8 +71,34 @@ public class WM8994ControlActivity extends PreferenceActivity implements
         mWm8994EnablePref.setChecked(WM8994_CONTROL_ENABLED.equals(temp));
         
     }
+    
+    // Preference change action for check boxes
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+    	
+    	// "Enable" box value
+    	if (preference == mWm8994EnablePref) {
+    		// Store box value as a string in "boxValue"
+    		String boxValue = mWm8994EnablePref.isChecked() ? "1" : "0";
+    		// Make sure boxValue is not null
+    		if (boxValue != null) {
+    			// check to make sure boxValue was written to file
+    			if (writeOneLine(WM8994_ENABLE, (String) boxValue)) {
+    				String debug ="DEBUG: Wrote value " + boxValue + " to " + WM8994_ENABLE;
+    				Log.d(TAG, debug);
+    				return true;
+    			} else {
+    				String error = "Writing to " + WM8994_ENABLE + " failed! Value: " + boxValue;
+    				Log.e(TAG, error);
+    				return false;
+				}
+    		}
+    	}
+        return false;
+    }
 
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
+    // preference change action for list boxes
+    /*public boolean onPreferenceChange(Preference preference, Object newValue) {
         String fname = "";
 
         if (newValue != null) {
@@ -91,7 +118,7 @@ public class WM8994ControlActivity extends PreferenceActivity implements
         }
         
         return false;
-    }
+    }*/
 
     // Read value from sysfs interface
     // "Borrowed" from CPUActivity.java
