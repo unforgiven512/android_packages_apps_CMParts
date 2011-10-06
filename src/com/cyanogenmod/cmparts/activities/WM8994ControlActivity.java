@@ -41,17 +41,24 @@ public class WM8994ControlActivity extends PreferenceActivity /*implements
 	// SYSFS paths
     public static final String WM8994_ENABLE = "/sys/devices/virtual/misc/voodoo_sound_control/enable";
     public static final String WM8994_SPEAKER_TUNING = "/sys/devices/virtual/misc/voodoo_sound/speaker_tuning";
+    public static final String WM8994_MONO_DOWNMIX = "/sys/devices/virtual/misc/voodoo_sound/mono_downmix";
     
     // Preference Objects
     private CheckBoxPreference mWm8994EnablePref;
     private CheckBoxPreference mSpeakerTuning;
+    private CheckBoxPreference mMonoDownmix;
     
     // XML item names
     private static final String WM8994_ENABLE_PREF = "pref_wm8994_control_enable";
     private static final String SPEAKER_TUNING_PREF = "pref_wm8994_speaker_tuning";
+    private static final String MONO_DOWNMIX_PREF = "pref_wm8994_mono_downmix";
+    
+    // Categories
+    private static final String GENERAL_CATEGORY = "general_category";
+    private static final String INTERNAL_SPEAKER_CATEGORY = "wm8994_internal_speaker_category";
+    private static final String SIGNAL_PROCESSING_CATEGORY = "wm8994_signal_processing_category";
     
     // Misc
-    private static final String GENERAL_CATEGORY = "general_category";
     private static final String PREF_ENABLED = "1";
     private static final String TAG = "WM8994Control";
   
@@ -66,6 +73,7 @@ public class WM8994ControlActivity extends PreferenceActivity /*implements
 
         PreferenceScreen prefSet = getPreferenceScreen();
 
+        // "General" category
         PreferenceCategory generalCategory = (PreferenceCategory)prefSet.findPreference (GENERAL_CATEGORY);
 
         // WM8994 enabled
@@ -73,10 +81,21 @@ public class WM8994ControlActivity extends PreferenceActivity /*implements
         mWm8994EnablePref = (CheckBoxPreference) prefSet.findPreference(WM8994_ENABLE_PREF);
         mWm8994EnablePref.setChecked(PREF_ENABLED.equals(temp));
         
+        // "Internal Speaker" category
+        PreferenceCategory internalSpeakerCategory = (PreferenceCategory)prefSet.findPreference(INTERNAL_SPEAKER_CATEGORY);
+        
         // speaker tuning
         temp = readOneLine(WM8994_SPEAKER_TUNING);
         mSpeakerTuning = (CheckBoxPreference) prefSet.findPreference(SPEAKER_TUNING_PREF);
         mSpeakerTuning.setChecked(PREF_ENABLED.equals(temp));
+        
+        // "Signal Processing" category
+        PreferenceCategory signalProcessingCategory = (PreferenceCategory)prefSet.findPreference(SIGNAL_PROCESSING_CATEGORY);
+        
+        // mono downmix
+        temp = readOneLine(WM8994_MONO_DOWNMIX);
+        mMonoDownmix = (CheckBoxPreference) prefSet.findPreference(MONO_DOWNMIX_PREF);
+        mMonoDownmix.setChecked(PREF_ENABLED.equals(temp));
         
     }
     
@@ -86,16 +105,20 @@ public class WM8994ControlActivity extends PreferenceActivity /*implements
     	
     	// WM8994 enable/disable box
     	if (preference == mWm8994EnablePref) {
-    		// Store box value as a string in "boxValue"
     		String boxValue = mWm8994EnablePref.isChecked() ? "1" : "0";
     		commitSysfsPreference(WM8994_ENABLE, boxValue);
     	}
     	
     	// Speaker tuning enable/disable box
     	if (preference == mSpeakerTuning) {
-    		// Store box value as a string in "boxValue"
     		String boxValue = mSpeakerTuning.isChecked() ? "1" : "0";
     		commitSysfsPreference(WM8994_SPEAKER_TUNING, boxValue);
+    	}
+    	
+    	// Mono downmix enable/disable box
+    	if (preference == mMonoDownmix) {
+    		String boxValue = mMonoDownmix.isChecked() ? "1" : "0";
+    		commitSysfsPreference(WM8994_MONO_DOWNMIX, boxValue);
     	}
     	
     	// otherwise quit, and return false (if preference name doesn't match a condition)
@@ -162,6 +185,7 @@ public class WM8994ControlActivity extends PreferenceActivity /*implements
         return true;
     }
     
+    // function to handle writing to sysfs interface
     public static boolean commitSysfsPreference(String prefFile, String prefValue) {
     	if (prefValue != null) {
 			if (writeOneLine(prefFile, prefValue)) {

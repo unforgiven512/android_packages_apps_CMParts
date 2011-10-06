@@ -12,7 +12,7 @@
 	</PreferenceCategory>
 	
 	<!--  Internal speaker options -->
-	<PreferenceCategory android:key="wm8994_internal_speaker"
+	<PreferenceCategory android:key="wm8994_internal_speaker_category"
 		android:title="@string/category_wm8994_internal_speaker">
 			
 		<CheckBoxPreference android:key="pref_wm8994_speaker_tuning"
@@ -21,5 +21,16 @@
 			android:dependency="pref_wm8994_control_enable" />
 		
     </PreferenceCategory>
+    
+    <!-- Signal Processing -->
+    <PreferenceCategory android:key="wm8994_signal_processing_category"
+    	android:title="@string/category_wm8994_signal_processing">
+    	
+   		<CheckBoxPreference android:key="pref_wm8994_mono_downmix"
+   			android:title="@string/pref_wm8994_mono_downmix_title"
+   			android:summary="@string/pref_wm8994_mono_downmix_summary"
+   			android:dependency="pref_wm8994_control_enable" />
+   	
+   	</PreferenceCategory>
 
 </PreferenceScreen>
