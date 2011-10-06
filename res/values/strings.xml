@@ -740,4 +740,12 @@
     <string name="perm_enable_management_summary">Enable application permissions management</string>
     <string name="perm_enable_warning_message">Warning!\nRevoking most permissions will most likely cause applications to malfunction. If an application with revoked permissions force-closes please grant the expected permissions or don\'t use the application.\nPlease DO NOT send bug reports to Cyanogenmod if an application with revoked permissions is not working as expected!</string>
     <string name="perm_enable_warning_title">Are you sure?</string>
+
+    <!-- WM8994 Control Settings -->
+    <string name="wm8994_settings_title_head">WM8994 Settings</string>
+    <string name="wm8994_settings_title_subhead">WM8994 Settings</string>
+    <string name="wm8994_settings_title_summary">Advanced control of the WM8994 sound processor hardware</string>
+    <string name="pref_wm8994_control_enable_title">Enable WM8994 Control</string>
+    <string name="pref_wm8994_control_enable_summary">Enable advanced controls for the WM8994 sound processor hardware</string>
+
 </resources>

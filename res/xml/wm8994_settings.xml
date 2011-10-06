@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- General settings -->
+    <PreferenceCategory android:key="general_category"
+        android:title="@string/general_title">
+
+        <CheckBoxPreference android:key="pref_wm8994_control_enable"
+            android:title="@string/pref_wm8994_control_enable_title" android:summary="@string/pref_wm8994_control_enable_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
