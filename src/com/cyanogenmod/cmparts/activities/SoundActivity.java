@@ -74,6 +74,8 @@ public class SoundActivity extends PreferenceActivity implements OnPreferenceCha
     private static final String CAMERA_CATEGORY = "camera_category";
     private static final String CAMERA_SHUTTER_DISABLE = "ro.camera.sound.disabled";
 
+    private static final String WM8994_CATEGORY = "wm8994_settings";
+
     private static String getKey(String suffix) {
         return PREFIX + suffix;
     }
@@ -151,6 +153,11 @@ public class SoundActivity extends PreferenceActivity implements OnPreferenceCha
             p = (CheckBoxPreference) prefSet.findPreference(CAMERA_SHUTTER_MUTE);
             p.setChecked(SystemProperties.getBoolean(getKey(CAMERA_SHUTTER_MUTE), false));
             p.setOnPreferenceChangeListener(this);
+        }
+
+        if (!getResources().getBoolean(R.bool.has_WM8994_enhancements)) {
+            // we cannot configure WM8994 extension settigs
+            prefSet.removePreference(prefSet.findPreference(WM8994_CATEGORY));
         }
     }
 
