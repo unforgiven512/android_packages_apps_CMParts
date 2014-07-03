@@ -29,4 +29,8 @@
 
     <bool name="has_envelope_key">false</bool>
     <bool name="has_explorer_key">false</bool>
+
+    <!--Whether or not have supercurio enhancement on WM8994 -->
+    <bool name="has_WM8994_enhancements">false</bool>
+
 </resources>

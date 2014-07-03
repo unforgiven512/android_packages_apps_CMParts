@@ -78,15 +78,6 @@
             android:targetPackage="com.cyanogenmod.cmparts"
             android:targetClass="com.cyanogenmod.cmparts.activities.TabletTweaksActivity" />
     </PreferenceScreen>
-    
-    <!--  WM8994 Control [TESTING] -->
-    <PreferenceScreen android:key="wm8994_settings"
-    	android:title="@string/wm8994_settings_title_head"
-    	android:summary="@string/wm8994_settings_summary_head">
-   		<intent android:action="android.intent.action.MAIN"
-   			android:targetPackage="com.cyanogenmod.cmparts"
-   			android:targetClass="com.cyanogenmod.cmparts.activities.WM8994ControlActivity" />
-  	</PreferenceScreen>
 
     <!-- Possible future Use: Pedlar <PreferenceScreen android:key="battery_tester"
         android:title="Test Battery" android:summary="Battery Drain Tester"> <intent
